@@ -19,7 +19,7 @@ export default class Game {
 		this.scene = new Scene(this.engine);
 		this.camera = new Camera( { scene: this.scene, canvasDom });
 		this.light = new HemisphericLight("light", new Vector3(0,1,0), this.scene);
-		const startingPosition = new Vector3(10, 10, 0);
+		const startingPosition = new Vector3(0, 10, 10);
 		this.snake = new Snake({ game: this, startingPosition });
 	}
 
