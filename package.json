@@ -1,0 +1,34 @@
+{
+  "name": "javascript-snake-3d",
+  "version": "1.0.0",
+  "description": "Boring JavaScript Project Presents: JavaScript Snake - 3D",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheVirtuoid/javascript-snake-3d.git"
+  },
+  "devDependencies": {
+    "@babylonjs/core": "^4.2.0",
+    "@babylonjs/loaders": "^4.2.0",
+    "earcut": "^2.2.2",
+    "vite": "^2.0.5"
+  },
+  "keywords": [
+    "javascript",
+    "snake",
+    "3d",
+    "babylonjs"
+  ],
+  "author": "TheVirtuoid <thevirtuoid@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheVirtuoid/javascript-snake-3d/issues"
+  },
+  "homepage": "https://github.com/TheVirtuoid/javascript-snake-3d#readme"
+}
