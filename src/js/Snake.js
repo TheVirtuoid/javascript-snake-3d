@@ -45,7 +45,6 @@ export default class Snake {
 		const { numSegments = 1, position = null, direction = null } = args;
 		let newPosition = position?.clone() || this.sps.particles[this.sps.nbParticles - 1].position.clone();
 		let newDirection = direction?.clone() || new Vector3(0, this.diameter * -1, 0);
-		// console.log('newPosition', newPosition);
 		const totalSegments = numSegments * this.maxSegmentsToAdd;
 		this.sps.addShape(this.sphere, totalSegments);
 		for(let i = this.sps.nbParticles - totalSegments; i < this.sps.nbParticles; i++) {
@@ -57,13 +56,9 @@ export default class Snake {
 	}
 
 	move (position, direction) {
-		// console.log('----------calling move: ', position, direction);
 		const newDirection = direction.negate();
 		position.addInPlace(newDirection);
-		// console.log('----after change: ', position, newDirection);
 		this.addSegmentToSnake({ numSegments: 1, position, newDirection });
-		// const dropSegment = this.sps.removeParticles(0, 0);
-		// dropSegment[0].dispose();
 	}
 
 
