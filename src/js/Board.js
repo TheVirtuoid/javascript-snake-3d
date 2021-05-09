@@ -1,4 +1,4 @@
-import {Color3, Mesh, MeshBuilder, StandardMaterial, Texture, Vector3} from "@babylonjs/core";
+import {Color3, Color4, Mesh, MeshBuilder, StandardMaterial, Texture, Vector3} from "@babylonjs/core";
 
 export default class Board {
 	walls = [];
@@ -6,34 +6,64 @@ export default class Board {
 	size = 40;
 	name;
 	game;
+	radius;
+	halfSize;
+	hitLowerLimit;
+	hitUpperLimit;
 
 	constructor(args) {
 		const { name, game, size = 40 } = args;
 		this.name = name;
 		this.game = game;
+		this.size = size;
+		this.radius = this.game.diameter / 2;
 		const scene = this.game.scene;
 		const material = new StandardMaterial(`${name}Mat`, scene);
 		material.emissiveTexture = new Texture("https://www.babylonjs-playground.com/textures/floor.png", scene);
-		material.emissiveColor = new Color3(1, 0, 0);
+		material.emissiveColor = new Color3(.25, 0, 0);
+		this.halfSize = this.size / 2;
+		this.hitLowerLimit = -this.halfSize + this.radius;
+		this.hitUpperLimit = this.halfSize - this.radius;
 		const wallSetup = [
-			{ position: new Vector3(0, 0, 20), width: this.size, height: this.size },
-			// { position: new Vector3(0, 0, 20), width: this.size, height: this.size },
-/*
-			{ position: new Vector3(0, 0, -20), width: this.size, height: this.size },
-			{ position: new Vector3(-20, 0, 0), width: this.size, height: this.size },
-			{ position: new Vector3(20, 0, 0), width: this.size, height: this.size },
-			{ position: new Vector3(0, 20, 0), width: this.size, height: this.size },
-			{ position: new Vector3(0, -20, 0), width: this.size, height: this.size }
-*/
+			{ position: new Vector3(0, 0, this.halfSize), size: this.size, offset: new Vector3(0, 0, .05) },
+			{ position: new Vector3(this.halfSize, 0, 0), size: this.size, rotation: new Vector3(0, 1, 0), rotationAmount: Math.PI / 2, offset: new Vector3(.1, 0, 0) },
+			{ position: new Vector3(0, 0, -this.halfSize), size: this.size, offset: new Vector3(-.05, 0, 0) },
+			{ position: new Vector3(-this.halfSize, 0, 0), size: this.size, rotation: new Vector3(0, 1, 0), rotationAmount: Math.PI / 2, offset: new Vector3(-.1, 0, 0) },
+
+			{ position: new Vector3(0, this.halfSize, 0), size: this.size, offset: new Vector3(0, .1, 0),  rotation: new Vector3(1, 0, 0), rotationAmount: -Math.PI / 2 },
+			{ position: new Vector3(0, -this.halfSize, 0), size: this.size, offset: new Vector3(0, -.1, 0),  rotation: new Vector3(1, 0, 0), rotationAmount: -Math.PI / 2 },
 		]
 
 		wallSetup.forEach( (params, index) => {
-			const { position, width, height } = params;
-			let wall = MeshBuilder.CreateTiledPlane(`${name}-${index}`, { width, height, sideOrientation: Mesh.DOUBLESIDE, pattern: Mesh.NO_FLIP, tileSize: 1, tileWidth: 1 }, scene);
+			const { position, size, rotation, rotationAmount, offset } = params;
+			let wall = MeshBuilder.CreateTiledPlane(`${name}-${index}`, { size, sideOrientation: Mesh.DOUBLESIDE, pattern: Mesh.NO_FLIP, tileSize: 4 }, scene);
 			wall.material = material;
-			// wall.position = position;
-			console.log(wall);
+			wall.position = position;
+			wall.position.addInPlace(offset);
+			wall.enableEdgesRendering();
+			wall.edgesWidth = 16;
+			wall.edgesColor = new Color4(0, 1, 0, 1);
+			if (rotation) {
+				wall.rotate(rotation, rotationAmount);
+			}
 			this.walls.push(wall);
+			this.game.light.excludeMesh(wall);
 		});
+	}
+
+	isHit() {
+		const { x, y, z } = this.game.camera.getNextPosition();
+		document.getElementById('camera-direction').textContent = `(${x}, ${y}, ${z}), lower: ${this.hitLowerLimit}, upper: ${this.hitUpperLimit}, radius: ${this.radius}`;
+		const hit = x - this.radius <= this.hitLowerLimit ||
+				x + this.radius >= this.hitUpperLimit ||
+				y - this.radius <= this.hitLowerLimit ||
+				y + this.radius >= this.hitUpperLimit ||
+				z - this.radius <= this.hitLowerLimit ||
+				z + this.radius >= this.hitUpperLimit;
+		return hit;
+/*
+		const head = this.game.snake.head;
+		return this.walls.some( wall => wall.intersectsMesh(head));
+*/
 	}
 }

@@ -1,14 +1,14 @@
-import {MeshBuilder, Vector3} from "@babylonjs/core";
+import {MeshBuilder, StandardMaterial, Texture, Vector3} from "@babylonjs/core";
 
 export default class Snake {
 
 	tail = [];
 	hits = new Map();
-	head;
 	diameter = .25;
 	game;
 	speed = 3;
 	hit = false;
+	skin;
 
 	constructor(args) {
 		const { name, game, diameter = null, speed = 3, startingSegments = 10 } = args;
@@ -16,38 +16,47 @@ export default class Snake {
 		this.game = game;
 		this.diameter = diameter || this.diameter;
 		this.speed = speed || this.speed;
-		this.head = new MeshBuilder.CreateSphere(`${name}-head`, { diameter: this.diameter }, this.game.scene);
-		this.head.position = this.game.camera.position.clone();
+		this.skin = new StandardMaterial(`${name}-skin`, this.game.scene);
+		this.skin.diffuseTexture = new Texture("/img/snakeskin.jpg", this.game.scene);
+
+		const cameraPosition = this.game.camera.position.clone();
 		// build out the first part of the tail
 		for(let i = 0; i < startingSegments; i++) {
 			const segment = this.newSegment();
-			const position = this.head.position.clone();
+			const position = cameraPosition.clone();
 			position.subtractInPlace(new Vector3(0, i * this.diameter, 0));
 			segment.position = position;
 			this.tail.push(segment);
 		}
 	}
 
-	addTailSegment() {
+	addTailSegment(grow = false) {
 		const { camera, scene } = this.game;
-		const segment = MeshBuilder.CreateSphere(`${name}-tail${this.tail.length}`, { diameter: this.diameter }, scene);
+		const segment = this.newSegment();
 	 	const direction = camera.getDirection(Vector3.Backward()).divide(new Vector3(this.speed, this.speed, this.speed));
 		segment.position = camera.position.clone();
 		segment.position.addInPlace(direction);
 		this.tail.unshift(segment);
-		const { x, y, z } = this.getRange(segment.position);
-		this.hits.set(x, new Map());
-		this.hits.get(x).set(y, new Map());
-		this.hits.get(x).get(y).set(z, segment.name);
+		if (!grow) {
+			const lostSegment = this.tail.pop();
+			lostSegment.dispose();
+		}
 		return segment;
 	}
 
 	newSegment() {
-		return MeshBuilder.CreateSphere(`${this.name}-tail${this.tail.length}`, { diameter: this.diameter }, this.game.scene);
+		const segment = MeshBuilder.CreateSphere(`${this.name}-tail${this.tail.length}`, { diameter: this.diameter }, this.game.scene);
+		segment.material = this.skin;
+		return segment;
 	}
 
 	move() {
-
+		const hit = this.game.board.isHit() || this.isTailHit();
+		if (!hit) {
+			this.game.camera.move();
+			this.addTailSegment();
+		}
+		return hit;
 	}
 
 	getRange(position) {
@@ -64,8 +73,11 @@ export default class Snake {
 	}
 
 	isTailHit() {
-		const direction = this.game.camera.getDirection(Vector3.Forward()).clone();
-		const positionToCheck = this.game.camera.position.clone().addInPlace(direction);
+		return false;
+	}
+/*
+	isTailHit() {
+		const positionToCheck = this.game.camera.getNextPosition();
 		const { x, y, xLow, xHigh, yLow, yHigh, zLow, zHigh } = this.getRange(positionToCheck);
 		let hit = false;
 		let xNum = xLow;
@@ -90,6 +102,7 @@ export default class Snake {
 		}
 		return hit;
 	}
+*/
 }
 
 /*

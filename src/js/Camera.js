@@ -42,4 +42,10 @@ export default class Camera {
 	getDirection (arg) {
 		return this.gameCamera.getDirection(arg);
 	}
+
+	getNextPosition () {
+		const position = this.position.clone();
+		position.addInPlace(this.getDirection(Vector3.Forward()));
+		return position;
+	}
 }
