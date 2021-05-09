@@ -7,13 +7,12 @@ export default class Camera {
 	speed = 4;
 
 	constructor( args ) {
-		const { scene, canvasDom } = args;
+		const { scene, canvasDom, position = new Vector3(0, 10, 0) } = args;
 		this.scene = scene;
-		this.gameCamera = new UniversalCamera("camera", new Vector3(0, 10, 0), this.scene);
+		this.gameCamera = new UniversalCamera("camera", position, this.scene);
 		this.gameCamera.attachControl(canvasDom, true);
 		this.gameCamera.setTarget(new Vector3(0, 10, 10));
 		this.gameCamera.ellipsoid = new Vector3(1, 1, 1);
-		// this.gameCamera.checkCollisions = true;
 		this.mesh = MeshBuilder.CreateSphere('cameraDude', { diameter: .25 }, this.scene);
 		this.mesh.position = new Vector3(0, 10, 0);
 	}
@@ -30,5 +29,17 @@ export default class Camera {
 		newDirection.z /= this.speed;
 		pos.addInPlace(newDirection);
 		this.mesh.position = pos.clone();
+	}
+
+	get position () {
+		return this.gameCamera.position;
+	}
+
+	set position (position) {
+		this.gameCamera.position = position;
+	}
+
+	getDirection (arg) {
+		return this.gameCamera.getDirection(arg);
 	}
 }
