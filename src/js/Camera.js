@@ -15,6 +15,7 @@ export default class Camera {
 		this.gameCamera.ellipsoid = new Vector3(1, 1, 1);
 		this.mesh = MeshBuilder.CreateSphere('cameraDude', { diameter: .25 }, this.scene);
 		this.mesh.position = new Vector3(0, 10, 0);
+		this.mesh.isPickable = false;
 	}
 
 	setSpeed(newSpeed) {

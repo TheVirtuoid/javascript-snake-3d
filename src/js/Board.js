@@ -53,7 +53,6 @@ export default class Board {
 
 	isHit() {
 		const { x, y, z } = this.game.camera.getNextPosition();
-		document.getElementById('camera-direction').textContent = `(${x}, ${y}, ${z}), lower: ${this.hitLowerLimit}, upper: ${this.hitUpperLimit}, radius: ${this.radius}`;
 		const hit = x - this.radius <= this.hitLowerLimit ||
 				x + this.radius >= this.hitUpperLimit ||
 				y - this.radius <= this.hitLowerLimit ||
@@ -61,9 +60,5 @@ export default class Board {
 				z - this.radius <= this.hitLowerLimit ||
 				z + this.radius >= this.hitUpperLimit;
 		return hit;
-/*
-		const head = this.game.snake.head;
-		return this.walls.some( wall => wall.intersectsMesh(head));
-*/
 	}
 }
