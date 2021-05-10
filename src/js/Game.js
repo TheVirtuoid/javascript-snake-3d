@@ -20,7 +20,7 @@ export default class Game {
 	stopGame = false;
 	runningFrameRate = 0;
 	speed = 1;
-	diameter = .25;
+	diameter = .5;
 	size = 40;
 	fps;
 
@@ -30,7 +30,7 @@ export default class Game {
 		const startingPosition = new Vector3(0, 10, 10);
 		this.camera = new Camera( { scene: this.scene, canvasDom });
 		this.light = new Light( {name: "light", game: this });
-		this.snake = new Snake({ game: this, name: 'snake', speed: this.speed, startingPosition, startingSegments: 2000, diameter: this.diameter });
+		this.snake = new Snake({ game: this, name: 'snake', speed: this.speed, startingPosition, startingSegments: 500, diameter: this.diameter });
 		this.board = new Board({ name: "board", game: this, size: this.size });
 		this.fps = document.getElementById('fps');
 	}
