@@ -85,7 +85,7 @@ export default class Snake {
 		return gotAHit;
 	}
 
-	isReady () {
+	initialize() {
 		return Promise.resolve(true);
 	}
 

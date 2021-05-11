@@ -51,7 +51,7 @@ export default class Board {
 		});
 	}
 
-	isReady() {
+	initialize() {
 		return Promise.resolve(true);
 	}
 

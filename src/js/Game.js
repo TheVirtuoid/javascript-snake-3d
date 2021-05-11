@@ -27,6 +27,7 @@ export default class Game {
 	marker;
 	score;
 	gotAHit;
+	ready;
 
 	constructor (canvasDom) {
 		this.engine = new Engine(canvasDom);
@@ -39,13 +40,30 @@ export default class Game {
 		this.fps = document.getElementById('fps');
 		this.marker = new Marker({ name: "marker", game: this });
 		this.score = 0;
+		this.ready = false;
+	}
+
+	start() {
+		const initializers = [];
+		initializers.push(this.camera.initialize());
+		initializers.push(this.light.initialize());
+		initializers.push(this.snake.initialize());
+		initializers.push(this.board.initialize());
+		initializers.push(this.marker.initialize());
+		Promise.all(initializers)
+				.then(this.initialize.bind(this));
+	}
+
+	initialize() {
+		this.ready = true;
+		this.go();
 	}
 
 	go () {
 		this.runningFrameRate = this.frameRate;
 		this.scene.registerBeforeRender(this.gameRunner.bind(this));
-		this.stopGame = false;
-		// this.marker.setPosition();
+		this.stopGame = true;
+		this.marker.setPosition();
 		this.score = 0;
 		this.engine.runRenderLoop( () => {
 			this.scene.render();

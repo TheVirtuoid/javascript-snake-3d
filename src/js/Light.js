@@ -20,7 +20,7 @@ export default class Light {
 		this.gameLight.excludedMeshes.push(mesh);
 	}
 
-	isReady() {
+	initialize() {
 		return Promise.resolve(true);
 	}
 }

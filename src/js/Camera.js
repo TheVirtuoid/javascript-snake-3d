@@ -50,7 +50,7 @@ export default class Camera {
 		return position;
 	}
 
-	isReady() {
+	initialize() {
 		return Promise.resolve(true);
 	}
 }

@@ -4,4 +4,4 @@ import Game from "./Game";
 
 const canvasDom = document.getElementById('board');
 const game = new Game(canvasDom);
-game.go();
+game.start();

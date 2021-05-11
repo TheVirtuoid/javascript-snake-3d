@@ -8,7 +8,6 @@ export default class Marker {
 	highMark;
 	range;
 	mesh;
-	ready;
 
 	constructor (args) {
 		const { name, game } = args;
@@ -20,13 +19,6 @@ export default class Marker {
 		this.range = Math.abs(this.lowMark) + this.highMark;
 		this.skin = new StandardMaterial(`${name}-skin`, this.game.scene);
 		this.skin.diffuseTexture = new Texture("/img/apple1.jpg", this.game.scene);
-		SceneLoader.ImportMesh('SMK_JJ0KQAO2_Watermelon', '/img/watermelon.glb', '', this.game.scene,
-			(meshes, particleSystems, skeletons, animationGroups, transformNodes, geometries,  lights) => {
-			// console.log(meshes, particleSystems, skeletons, animationGroups, transformNodes, geometries, lights);
-			this.mesh = meshes[1];
-			this.mesh.material = this.skin;
-			this.ready = true;
-		});
 	}
 
 	setPosition() {
@@ -38,6 +30,21 @@ export default class Marker {
 			this.mesh.position = new Vector3(x, y, z);
 			hit = false;
 		}
+	}
+
+	// (meshes, particleSystems, skeletons, animationGroups, transformNodes, geometries,  lights) => {
+	initialize () {
+		const self = this;
+		return new Promise( (resolve, reject) => {
+			SceneLoader.ImportMesh('SMK_JJ0KQAO2_Watermelon', '/img/watermelon.glb', '', self.game.scene, (meshes) => {
+				self.mesh = meshes[1];
+				self.mesh.material = self.skin;
+				self.mesh.name = self.name;
+				self.mesh.scaling = new Vector3(4, 4, 4);
+				resolve(true);
+			});
+		});
+
 	}
 
 }

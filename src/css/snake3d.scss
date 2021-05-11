@@ -4,13 +4,31 @@ html {
 
 body {
   font-size: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
 }
 
 main {
-  padding: .5rem .25rem .25rem .25rem;
+  display: inline-block;
+  padding: .5rem;
   border-radius: 1rem;
   background-color: red;
+
+  h1 {
+    text-align: center;
+    margin: 0 0 .5rem 0;
+
+  }
+  section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: .5rem;
+
+    button {
+      background-color: rgba(255, 232, 232, .1);
+      border: none;
+      border-radius: 1rem;
+      padding: 0;
+
+    }
+  }
 }
