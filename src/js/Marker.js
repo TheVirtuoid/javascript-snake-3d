@@ -1,4 +1,5 @@
-import {MeshBuilder, StandardMaterial, Texture, Vector3} from "@babylonjs/core";
+import {MeshBuilder, SceneLoader, StandardMaterial, Texture, Vector3} from "@babylonjs/core";
+import "@babylonjs/loaders";
 
 export default class Marker {
 	name;
@@ -7,18 +8,25 @@ export default class Marker {
 	highMark;
 	range;
 	mesh;
+	ready;
 
 	constructor (args) {
 		const { name, game } = args;
 		this.name = name;
 		this.game = game;
+		this.ready = false;
 		this.lowMark = 0 - this.game.size / 2 + this.game.diameter * 2;
 		this.highMark = this.game.size / 2 - this.game.diameter * 2;
 		this.range = Math.abs(this.lowMark) + this.highMark;
-		this.mesh = MeshBuilder.CreateSphere(`${this.name}`, { diameter: this.game.diameter * 2 }, this.game.scene);
 		this.skin = new StandardMaterial(`${name}-skin`, this.game.scene);
 		this.skin.diffuseTexture = new Texture("/img/apple1.jpg", this.game.scene);
-		this.mesh.material = this.skin;
+		SceneLoader.ImportMesh('SMK_JJ0KQAO2_Watermelon', '/img/watermelon.glb', '', this.game.scene,
+			(meshes, particleSystems, skeletons, animationGroups, transformNodes, geometries,  lights) => {
+			// console.log(meshes, particleSystems, skeletons, animationGroups, transformNodes, geometries, lights);
+			this.mesh = meshes[1];
+			this.mesh.material = this.skin;
+			this.ready = true;
+		});
 	}
 
 	setPosition() {

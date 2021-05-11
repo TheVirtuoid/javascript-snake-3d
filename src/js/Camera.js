@@ -49,4 +49,8 @@ export default class Camera {
 		position.addInPlace(this.getDirection(Vector3.Forward()));
 		return position;
 	}
+
+	isReady() {
+		return Promise.resolve(true);
+	}
 }

@@ -45,7 +45,7 @@ export default class Game {
 		this.runningFrameRate = this.frameRate;
 		this.scene.registerBeforeRender(this.gameRunner.bind(this));
 		this.stopGame = false;
-		this.marker.setPosition();
+		// this.marker.setPosition();
 		this.score = 0;
 		this.engine.runRenderLoop( () => {
 			this.scene.render();

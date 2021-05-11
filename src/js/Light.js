@@ -19,4 +19,8 @@ export default class Light {
 	excludeMesh(mesh) {
 		this.gameLight.excludedMeshes.push(mesh);
 	}
+
+	isReady() {
+		return Promise.resolve(true);
+	}
 }

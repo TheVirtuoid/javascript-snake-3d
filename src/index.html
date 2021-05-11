@@ -10,15 +10,18 @@
         <title>Boring JavaScript Projects: JavaScript Snake 3D</title>
     </head>
     <body>
-        <header>
-            <h1>JavaScript Snake - 3D</h1>
-        </header>
+        <header></header>
         <main>
-            <div>Data: <span id="camera-direction"></span></div>
-            <div>FPS: <span id="fps">0</span>. Score: <span id="score">0</span></div>
+            <h1>JavaScript Snake - In 3D</h1>
+            <section id="data">
+                <div>Score: <span id="score">0</span></div>
+                <div><button id="start" type="button">Start</button></div>
+                <div>FPS: <span id="fps">0</span></div>
+            </section>
+            <!-- <div>Data: <span id="camera-direction"></span></div> -->
             <canvas id="board" width="600" height="600"></canvas>
         </main>
-        <footer></footer>
+        <footer>Copyright &copy; 2021 and onwards m.parker smith a.k.a. TheVirtuoid</footer>
         <script src="/js/snake3d.js" type="module"></script>
     </body>
 </html>

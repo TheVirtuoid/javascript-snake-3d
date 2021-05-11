@@ -51,14 +51,8 @@ export default class Board {
 		});
 	}
 
-	isHit() {
-		const { x, y, z } = this.game.camera.getNextPosition();
-		const hit = x - this.radius <= this.hitLowerLimit ||
-				x + this.radius >= this.hitUpperLimit ||
-				y - this.radius <= this.hitLowerLimit ||
-				y + this.radius >= this.hitUpperLimit ||
-				z - this.radius <= this.hitLowerLimit ||
-				z + this.radius >= this.hitUpperLimit;
-		return hit;
+	isReady() {
+		return Promise.resolve(true);
 	}
+
 }

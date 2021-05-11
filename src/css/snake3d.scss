@@ -4,4 +4,13 @@ html {
 
 body {
   font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+main {
+  padding: .5rem .25rem .25rem .25rem;
+  border-radius: 1rem;
+  background-color: red;
 }
