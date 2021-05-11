@@ -57,7 +57,7 @@ export default class Snake {
 		// const hit = this.game.board.isHit() || this.isTailHit();
 		// const hit = this.game.board.isHit() || this.hit();
 		const hit = this.hit();
-		if (!hit) {
+		if (!hit.other && !hit.marker) {
 			this.game.camera.move();
 			this.addTailSegment();
 		}
@@ -65,7 +65,7 @@ export default class Snake {
 	}
 
 	hit() {
-		let gotAHit = false;
+		let gotAHit = { marker: false, other: false };
 		const origin = this.game.camera.getNextPosition();
 		const direction = this.game.camera.getDirection(Vector3.Forward());
 		const length = Math.sqrt((this.game.size * this.game.size) * 2);
@@ -75,7 +75,7 @@ export default class Snake {
 			document.getElementById('camera-direction').textContent = `Mesh hit: ${meshHit.pickedMesh.name}, distance: ${meshHit.distance - this.radius}`;
 			if (meshHit.distance - this.radius < this.diameter) {
 				console.log(`****HIT: ${meshHit.pickedMesh.name}`);
-				gotAHit = true;
+				gotAHit = {marker: meshHit.pickedMesh.name === "marker", other: meshHit.pickedMesh.name !== "marker" };
 			}
 		}
 		return gotAHit;
