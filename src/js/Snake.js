@@ -1,4 +1,4 @@
-import {MeshBuilder, Ray, StandardMaterial, Texture, Vector3} from "@babylonjs/core";
+import {MeshBuilder, Ray, Sound, StandardMaterial, Texture, Vector3} from "@babylonjs/core";
 
 export default class Snake {
 
@@ -9,6 +9,7 @@ export default class Snake {
 	game;
 	speed = 3;
 	skin;					// snake skin found here: https://www.deviantart.com/mildak/art/snake-skin-68052393
+	crunch;
 
 	constructor(args) {
 		const { name, game, diameter = null, speed = 3, startingSegments = 10 } = args;
@@ -20,6 +21,7 @@ export default class Snake {
 		this.tailNumber = 0;
 		this.skin = new StandardMaterial(`${name}-skin`, this.game.scene);
 		this.skin.diffuseTexture = new Texture("/img/snakeskin.jpg", this.game.scene);
+		this.crunch = new Sound("eat-apple", "/sounds/eat-apple.mp3", this.game.scene);
 
 		const cameraPosition = this.game.camera.position.clone();
 		// build out the first part of the tail

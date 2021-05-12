@@ -1,5 +1,6 @@
 html {
   font-size: 20px;
+  font-family: Roboto, sans-serif;
 }
 
 body {
@@ -11,10 +12,17 @@ main {
   padding: .5rem;
   border-radius: 1rem;
   background-color: red;
+  background-image: url('../img/skin-background.jpg');
 
   h1 {
     text-align: center;
-    margin: 0 0 .5rem 0;
+    font-family: 'Pangolin', cursive;
+    color: red;
+    /*
+    background-color: rgba(255, 255, 255, .5);
+    box-shadow: 0px 0px 10px 10px rgba(255, 255, 255, .5);
+    margin: 0 auto;
+    */
 
   }
   section {
@@ -22,13 +30,32 @@ main {
     flex-direction: row;
     justify-content: space-around;
     margin-bottom: .5rem;
+    color: white;
+
+    div {
+      vertical-align: middle;
+      > span {
+        display: inline-block;
+        padding: .25rem 2rem;
+      }
+    }
 
     button {
-      background-color: rgba(255, 232, 232, .1);
+      background-color: rgba(128, 192, 255, .7);
+      box-shadow: 0px 0px 5px 5px green;
       border: none;
       border-radius: 1rem;
-      padding: 0;
-
+      padding: .25rem 2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      &[disabled] {
+        cursor: default;
+        box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, .4);
+        background-color: rgba(200, 200, 200, .7);
+      }
+      &.hide {
+        visibility: hidden;
+      }
     }
   }
 }

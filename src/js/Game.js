@@ -28,6 +28,7 @@ export default class Game {
 	score;
 	gotAHit;
 	ready;
+	startButton;
 
 	constructor (canvasDom) {
 		this.engine = new Engine(canvasDom);
@@ -41,6 +42,7 @@ export default class Game {
 		this.marker = new Marker({ name: "marker", game: this });
 		this.score = 0;
 		this.ready = false;
+		this.startButton = document.getElementById('start');
 	}
 
 	start() {
@@ -56,13 +58,19 @@ export default class Game {
 
 	initialize() {
 		this.ready = true;
-		this.go();
+		this.startButton.removeAttribute('disabled');
+		this.startButton.textContent = "Start"
+		this.startButton.addEventListener('click', this.go.bind(this), { once: true });
+		this.scene.render();
 	}
 
 	go () {
+		this.startButton.setAttribute('disabled', '');
+		this.startButton.classList.add('hide');
+		this.startButton.textContent = "Please Wait";
 		this.runningFrameRate = this.frameRate;
 		this.scene.registerBeforeRender(this.gameRunner.bind(this));
-		this.stopGame = true;
+		this.stopGame = false;
 		this.marker.setPosition();
 		this.score = 0;
 		this.engine.runRenderLoop( () => {
@@ -88,6 +96,7 @@ export default class Game {
 			if (this.gotAHit.marker) {
 				this.marker.setPosition();
 				this.score++;
+				this.snake.crunch.play();
 				document.getElementById('score').textContent = this.score.toString();
 			}
 			this.fps.textContent = this.engine.getFps().toFixed();

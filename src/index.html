@@ -7,6 +7,8 @@
         <meta name="Description" content="Boring JavaScript Projects Presents: JavaScript Snake in 3D">
         <link rel="icon" href="/img/favicon.ico">
         <link rel="stylesheet" href="/css/snake3d.css">
+        <link rel="preconnet" href="https://fonts.gstatic.com">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pangolin&display=swap">
         <title>Boring JavaScript Projects: JavaScript Snake 3D</title>
     </head>
     <body>
@@ -14,9 +16,9 @@
         <main>
             <h1>JavaScript Snake - In 3D</h1>
             <section id="data">
-                <div>Score: <span id="score">0</span></div>
-                <div><button id="start" type="button">Start</button></div>
-                <div>FPS: <span id="fps">0</span></div>
+                <div><span>Score: <span id="score">0</span></span></div>
+                <div><button id="start" type="button" disabled>Please Wait</button></div>
+                <div><span>FPS: <span id="fps">0</span></span></div>
             </section>
             <!-- <div>Data: <span id="camera-direction"></span></div> -->
             <canvas id="board" width="600" height="600"></canvas>
