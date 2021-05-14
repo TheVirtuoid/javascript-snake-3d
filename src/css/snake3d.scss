@@ -22,11 +22,11 @@ main {
     text-align: center;
     font-family: 'Pangolin', cursive;
     color: red;
-    /*
-    background-color: rgba(255, 255, 255, .5);
-    box-shadow: 0px 0px 10px 10px rgba(255, 255, 255, .5);
-    margin: 0 auto;
-    */
+
+    span {
+      background-color: rgba(255, 255, 255, .5);
+      box-shadow: 0px 0px 10px 10px rgba(255, 255, 255, .5);
+    }
 
   }
   section {

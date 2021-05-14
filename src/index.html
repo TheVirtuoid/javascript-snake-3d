@@ -14,14 +14,22 @@
     <body>
         <header></header>
         <main>
-            <h1>JavaScript Snake - In 3D</h1>
+            <h1><span>JavaScript Snake - In 3D</span></h1>
             <section id="data">
                 <div><span>Score: <span id="score">0</span></span></div>
                 <div><button id="start" type="button" disabled>Please Wait</button></div>
                 <div><span>FPS: <span id="fps">0</span></span></div>
             </section>
-            <!-- <div>Data: <span id="camera-direction"></span></div> -->
-            <canvas id="board" width="600" height="600"></canvas>
+            <section id="screens">
+                <canvas id="board" width="600" height="600"></canvas>
+                <div id="configuration">
+                    <label><span>Configuration</span><button type="button">Close</button></label>
+                    <label><span>Starting Segments</span><input type="number" id="config-starting-segments" /></label>
+                    <label><span>Segments per Apple</span><input type="number" id="config-segments-per-apple" /></label>
+                    <label><span>Increasing Speed</span><input type="checkbox" id="config-increasing-speed" /></label>
+                    <label><span>Sound</span><input type="checkbox" id="config-sound" /></label>
+                </div>
+            </section>
         </main>
         <footer>Copyright &copy; 2021 and onwards m.parker smith a.k.a. TheVirtuoid</footer>
         <script src="/js/snake3d.js" type="module"></script>
