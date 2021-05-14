@@ -14,6 +14,10 @@ main {
   background-color: red;
   background-image: url('../img/skin-background.jpg');
 
+  canvas {
+    background-color: black;
+  }
+
   h1 {
     text-align: center;
     font-family: 'Pangolin', cursive;

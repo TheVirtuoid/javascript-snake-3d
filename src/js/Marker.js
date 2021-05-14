@@ -8,6 +8,7 @@ export default class Marker {
 	highMark;
 	range;
 	mesh;
+	hasInitialized;
 
 	constructor (args) {
 		const { name, game } = args;
@@ -19,6 +20,7 @@ export default class Marker {
 		this.range = Math.abs(this.lowMark) + this.highMark;
 		this.skin = new StandardMaterial(`${name}-skin`, this.game.scene);
 		this.skin.diffuseTexture = new Texture("/img/apple1.jpg", this.game.scene);
+		this.hasInitialized = false;
 	}
 
 	setPosition() {
@@ -36,13 +38,18 @@ export default class Marker {
 	initialize () {
 		const self = this;
 		return new Promise( (resolve, reject) => {
-			SceneLoader.ImportMesh('SMK_JJ0KQAO2_Watermelon', '/img/watermelon.glb', '', self.game.scene, (meshes) => {
-				self.mesh = meshes[1];
-				self.mesh.material = self.skin;
-				self.mesh.name = self.name;
-				self.mesh.scaling = new Vector3(4, 4, 4);
-				resolve(true);
-			});
+			if (self.hasInitialized) {
+				resolve(true)
+			} else {
+				self.hasInitialized = true;
+				SceneLoader.ImportMesh('SMK_JJ0KQAO2_Watermelon', '/img/watermelon.glb', '', self.game.scene, (meshes) => {
+					self.mesh = meshes[1];
+					self.mesh.material = self.skin;
+					self.mesh.name = self.name;
+					self.mesh.scaling = new Vector3(4, 4, 4);
+					resolve(true);
+				});
+			}
 		});
 
 	}

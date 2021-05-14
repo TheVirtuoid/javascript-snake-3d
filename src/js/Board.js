@@ -19,8 +19,8 @@ export default class Board {
 		this.radius = this.game.diameter / 2;
 		const scene = this.game.scene;
 		const material = new StandardMaterial(`${name}Mat`, scene);
-		material.emissiveTexture = new Texture("https://www.babylonjs-playground.com/textures/floor.png", scene);
-		material.emissiveColor = new Color3(.25, 0, 0);
+		material.emissiveTexture = new Texture("/img/fence-1.jpg", scene);
+		material.emissiveColor = new Color3(.1, .1, .1);
 		this.halfSize = this.size / 2;
 		this.hitLowerLimit = -this.halfSize + this.radius;
 		this.hitUpperLimit = this.halfSize - this.radius;
