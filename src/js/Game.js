@@ -10,6 +10,8 @@ import Camera from "./Camera";
 import Board from "./Board";
 import Light from "./Light";
 import Marker from "./Marker";
+import Configuration from "./Configuration";
+import GameSound from "./GameSound";
 
 export default class Game {
 	scene;
@@ -19,6 +21,7 @@ export default class Game {
 	snake;
 	board;
 	canvas;
+	screens;
 	frameRate = 2;
 	stopGame = false;
 	runningFrameRate = 0;
@@ -31,11 +34,28 @@ export default class Game {
 	gotAHit;
 	ready;
 	startButton;
+	setConfigurationButton;
 	startingSegments = 200;
-	segmentsToGrow = 10;
+	segmentsPerMarker = 10;
 	growNextSegment = false;
+	increasingSpeed = false;
+	soundOnOff = true;
+	setConfiguration;
+	gameSound;
 
 	constructor (canvasDom) {
+		this.setConfigurationButton = document.getElementById('set-configuration');
+		this.setConfiguration = new Configuration({ game: this, launcher: this.setConfigurationButton });
+		const { startingSegments, segmentsPerMarker, increasingSpeed, soundOnOff } = this.setConfiguration.initialize({
+			startingSegments: this.startingSegments,
+			segmentsPerMarker: this.segmentsPerMarker,
+			increasingSpeed: this.increasingSpeed,
+			soundOnOff: this.soundOnOff });
+		this.startingSegments = startingSegments;
+		this.segmentsPerMarker = segmentsPerMarker;
+		this.increasingSpeed = increasingSpeed;
+		this.soundOnOff = soundOnOff;
+		this.screens = document.getElementById('screens');
 		this.canvas = canvasDom;
 		this.engine = new Engine(canvasDom);
 		this.scene = new Scene(this.engine);
@@ -45,12 +65,14 @@ export default class Game {
 		this.light = new Light( {name: "light", game: this });
 		this.snake = new Snake({ game: this, name: 'snake', speed: this.speed, startingPosition, startingSegments: this.startingSegments, diameter: this.diameter });
 		this.board = new Board({ name: "board", game: this, size: this.size });
+		this.gameSound = new GameSound({ game: this });
 		this.fps = document.getElementById('fps');
 		this.marker = new Marker({ name: "marker", game: this });
 		this.score = 0;
 		this.ready = false;
 		this.startButton = document.getElementById('start');
 		this.scene.registerBeforeRender(this.gameRunner.bind(this));
+		this.screens.addEventListener('snake-reinitialize', this.changeConfiguration.bind(this));
 	}
 
 	start() {
@@ -76,9 +98,20 @@ export default class Game {
 		this.scene.render();
 	}
 
+	changeConfiguration(event) {
+		const { startingSegments, segmentsPerMarker, increasingSpeed, soundOnOff } = this.setConfiguration.get();
+		if (this.startingSegments !== startingSegments) {
+			this.snake.initialize( { startingSegments });
+		}
+		this.startingSegments = startingSegments;
+		this.segmentsPerMarker = segmentsPerMarker;
+		this.increasingSpeed = increasingSpeed;
+		this.soundOnOff = soundOnOff;
+	}
+
 	go () {
-		console.log('------------------------GO!!!!!!!!!!!');
 		this.startButton.setAttribute('disabled', '');
+		this.setConfigurationButton.setAttribute('disabled', '');
 		this.startButton.classList.add('hide');
 		this.startButton.textContent = "Please Wait";
 		this.marker.setPosition();
@@ -94,17 +127,20 @@ export default class Game {
 		this.startButton.textContent = "Play Again";
 		this.startButton.addEventListener('click', this.start.bind(this), { once: true });
 		this.startButton.removeAttribute('disabled');
+		this.setConfigurationButton.removeAttribute('disabled');
 		this.startButton.classList.remove('hide');
 	}
 
 	gameRunner () {
 		if (this.stopGame) {
-			console.log('-------------stoppping');
+			this.gameSound.play(this.stopGame);
+/*
 			const sound = this.snake.soundMatrix.get(this.stopGame);
 			if (sound) {
 				console.log(`playing ${this.stopGame}`);
 				sound.play();
 			}
+*/
 			this.engine.stopRenderLoop();
 			this.stop();
 			return;
@@ -118,7 +154,7 @@ export default class Game {
 			if (this.gotAHit.marker) {
 				this.marker.setPosition();
 				this.score++;
-				this.snake.crunch.play();
+				this.gameSound.play("marker");
 				this.growNextSegment = true;
 				document.getElementById('score').textContent = this.score.toString();
 			}

@@ -27,22 +27,15 @@ export default class Snake {
 		this.startingSegments = startingSegments;
 		this.skin = new StandardMaterial(`${name}-skin`, this.game.scene);
 		this.skin.diffuseTexture = new Texture("/img/snakeskin.jpg", this.game.scene);
+/*
 		this.crunch = new Sound("eat-apple", "/sounds/eat-apple.mp3", this.game.scene);
 		this.zap = new Sound("electric-zap", "/sounds/zap.mp3", this.game.scene);
 		this.tailCrash = new Sound("electric-zap", "/sounds/tail-crash.mp3", this.game.scene);
 		this.soundMatrix.set('boa', this.zap);
 		this.soundMatrix.set('mar', this.crunch);
 		this.soundMatrix.set('sna', this.tailCrash);
+*/
 
-		/*const cameraPosition = this.game.camera.position.clone();
-		// build out the first part of the tail
-		for(let i = 0; i < startingSegments; i++) {
-			const segment = this.newSegment();
-			const position = cameraPosition.clone();
-			// position.subtractInPlace(new Vector3(0, i * this.diameter, 0));
-			segment.position = position;
-			this.tail.push(segment);
-		}*/
 	}
 
 	addTailSegment(grow = false) {
@@ -60,7 +53,7 @@ export default class Snake {
 				this.growthCounter --;
 			}
 		} else {
-			this.growthCounter += this.game.segmentsToGrow;
+			this.growthCounter += this.game.segmentsPerMarker;
 		}
 		return segment;
 	}
@@ -91,17 +84,22 @@ export default class Snake {
 		if (meshHit?.pickedMesh?.name) {
 			const name = meshHit.pickedMesh.name;
 			if (meshHit.distance - this.radius < this.diameter) {
-				gotAHit = {marker: name === "marker", other: name !== "marker" ? name.substring(0, 3) : false };
+				gotAHit = {marker: name === "marker", other: name !== "marker" ? name : false };
 			}
 		}
 		return gotAHit;
 	}
 
-	initialize() {
+	initialize(args = {}) {
+		const { startingSegments } = args;
+		if (startingSegments) {
+			this.startingSegments = startingSegments;
+		}
 		this.tail.forEach( segment => {
 			this.game.scene.removeMesh(segment);
 			segment.dispose();
 		});
+		this.tail = [];
 		this.tailNumber = 0;
 		const cameraPosition = this.game.camera.position.clone();
 		for(let i = 0; i < this.startingSegments; i++) {

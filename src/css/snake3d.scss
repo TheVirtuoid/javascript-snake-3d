@@ -11,8 +11,123 @@ main {
   display: inline-block;
   padding: .5rem;
   border-radius: 1rem;
-  background-color: red;
+  background-color: black;
   background-image: url('../img/skin-background.jpg');
+
+  #data {
+    #set-configuration {
+      color: white;
+      box-shadow: none;
+      background-color: transparent;
+      font-size: 1rem;
+      padding: 0;
+      &[disabled] {
+        color: gray;
+      }
+    }
+  }
+
+  #screens {
+    display: grid;
+    width: 600px;
+    canvas {
+      grid-area: 1 / 1/ 2 / 2;
+    }
+    #configuration {
+      grid-area: 1 / 1/ 2 / 2;
+      width: 90%;
+      max-height: 90%;
+      margin: auto auto;
+      z-index: 10;
+      display: none;
+      position: relative;
+      background-color: white;
+      border-radius: 1rem;
+      padding: .5rem;
+      color: darkblue;
+      &.show {
+        display: block;
+      }
+      > label {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin-bottom: 1rem;
+        &:first-of-type {
+          align-items: center;
+          span {
+            font-weight: bold;
+            font-size: 1.5rem;
+            &:last-of-type {
+              text-align: right;
+            }
+          }
+        }
+        input, span, button {
+          flex-basis: 50%;
+        }
+        button[close] {
+          box-shadow: none;
+          background-color: transparent;
+          font-weight: bold;
+          font-size: 2rem;
+        }
+        input {
+          text-align: left;
+          padding-left: 1rem;
+          &[type="checkbox"] {
+            display: none;
+            &:checked + label::before {
+              background-color: #89c12d;
+            }
+            &:checked + label::after {
+              left: 24px;
+            }
+          }
+        }
+        span {
+          text-align: right;
+          padding-right: 1rem;
+          &:last-of-type {
+            text-align: left;
+            position: relative;
+            label {
+              display: block;
+              width: 48px;
+              height: 24px;
+              text-indent: -150%;
+              clip: rect(0, 0, 0, 0);
+              color: transparent;
+              user-select: none;
+              &::before, &::after {
+                content: "";
+                display: block;
+                position: absolute;
+                cursor: pointer;
+              }
+              &::before {
+                width: 48px;
+                height: 100%;
+                background-color: #dedede;
+                border-radius: 9999em;
+                transition: background-color 0.25s ease;
+              }
+              &::after {
+                top: 0;
+                left: 0;
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background-color: #ffffff;
+                box-shadow: 0 0 2px rgba(0, 0, 0, 0.45);
+                transition: left 0.25s ease;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
   canvas {
     background-color: black;
