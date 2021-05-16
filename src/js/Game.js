@@ -134,13 +134,6 @@ export default class Game {
 	gameRunner () {
 		if (this.stopGame) {
 			this.gameSound.play(this.stopGame);
-/*
-			const sound = this.snake.soundMatrix.get(this.stopGame);
-			if (sound) {
-				console.log(`playing ${this.stopGame}`);
-				sound.play();
-			}
-*/
 			this.engine.stopRenderLoop();
 			this.stop();
 			return;

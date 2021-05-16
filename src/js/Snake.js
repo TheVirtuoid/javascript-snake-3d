@@ -27,15 +27,6 @@ export default class Snake {
 		this.startingSegments = startingSegments;
 		this.skin = new StandardMaterial(`${name}-skin`, this.game.scene);
 		this.skin.diffuseTexture = new Texture("/img/snakeskin.jpg", this.game.scene);
-/*
-		this.crunch = new Sound("eat-apple", "/sounds/eat-apple.mp3", this.game.scene);
-		this.zap = new Sound("electric-zap", "/sounds/zap.mp3", this.game.scene);
-		this.tailCrash = new Sound("electric-zap", "/sounds/tail-crash.mp3", this.game.scene);
-		this.soundMatrix.set('boa', this.zap);
-		this.soundMatrix.set('mar', this.crunch);
-		this.soundMatrix.set('sna', this.tailCrash);
-*/
-
 	}
 
 	addTailSegment(grow = false) {
