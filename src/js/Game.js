@@ -114,7 +114,7 @@ export default class Game {
 	}
 
 	initialize() {
-		// test
+		// testasas
 		this.runningFrameRate = this.frameRate;
 		this.stopGame = false;
 		this.growNextSegment = false;
