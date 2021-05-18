@@ -8,13 +8,12 @@ export default class Marker {
 	highMark;
 	range;
 	mesh;
-	hasInitialized;
+	// hasInitialized;
 
 	constructor (args) {
 		const { name, game } = args;
 		this.name = name;
 		this.game = game;
-		this.ready = false;
 		this.lowMark = 0 - this.game.size / 2 + this.game.diameter * 2;
 		this.highMark = this.game.size / 2 - this.game.diameter * 2;
 		this.range = Math.abs(this.lowMark) + this.highMark;
@@ -30,6 +29,7 @@ export default class Marker {
 			const y = Math.random() * this.range + this.lowMark;
 			const z = Math.random() * this.range + this.lowMark;
 			this.mesh.position = new Vector3(x, y, z);
+			// TODO: Add raytracing code here to determine hit or not
 			hit = false;
 		}
 	}
@@ -42,7 +42,11 @@ export default class Marker {
 				resolve(true)
 			} else {
 				self.hasInitialized = true;
-				SceneLoader.ImportMesh('SMK_JJ0KQAO2_Watermelon', '/img/watermelon.glb', '', self.game.scene, (meshes) => {
+				SceneLoader.ImportMesh('SMK_JJ0KQAO2_Watermelon',
+						'/img/watermelon.glb',
+						'',
+						self.game.scene,
+						(meshes) => {
 					self.mesh = meshes[1];
 					self.mesh.material = self.skin;
 					self.mesh.name = self.name;
@@ -51,7 +55,6 @@ export default class Marker {
 				});
 			}
 		});
-
 	}
 
 }

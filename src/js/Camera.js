@@ -11,10 +11,8 @@ export default class Camera {
 		this.scene = scene;
 		this.gameCamera = new UniversalCamera("camera", position, this.scene);
 		this.gameCamera.attachControl(canvasDom, true);
-		// this.gameCamera.setTarget(new Vector3(0, 10, 10));
 		this.gameCamera.ellipsoid = new Vector3(1, 1, 1);
 		this.mesh = MeshBuilder.CreateSphere('cameraDude', { diameter: .25 }, this.scene);
-		// this.mesh.position = new Vector3(0, 10, 0);
 		this.mesh.isPickable = false;
 	}
 

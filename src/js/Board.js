@@ -1,11 +1,10 @@
 import {Color3, Color4, Mesh, MeshBuilder, StandardMaterial, Texture, Vector3} from "@babylonjs/core";
 
 export default class Board {
-	walls = [];
-	board;
-	size = 40;
-	name;
-	game;
+	walls = [];			// each wall
+	size = 40;			// default size
+	name;						// name
+	game;						// game
 	radius;
 	halfSize;
 	hitLowerLimit;
@@ -16,14 +15,20 @@ export default class Board {
 		this.name = name;
 		this.game = game;
 		this.size = size;
-		this.radius = this.game.diameter / 2;
+
+		// create material for the panels
 		const scene = this.game.scene;
 		const material = new StandardMaterial(`${name}Mat`, scene);
 		material.emissiveTexture = new Texture("/img/fence-1.jpg", scene);
 		material.emissiveColor = new Color3(.1, .1, .1);
+
+		// variables used in determining collisions
+		this.radius = this.game.diameter / 2;
 		this.halfSize = this.size / 2;
 		this.hitLowerLimit = -this.halfSize + this.radius;
 		this.hitUpperLimit = this.halfSize - this.radius;
+
+
 		const wallSetup = [
 			{ position: new Vector3(0, 0, this.halfSize), size: this.size, offset: new Vector3(0, 0, .05) },
 			{ position: new Vector3(this.halfSize, 0, 0), size: this.size, rotation: new Vector3(0, 1, 0), rotationAmount: Math.PI / 2, offset: new Vector3(.1, 0, 0) },

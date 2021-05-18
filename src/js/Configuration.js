@@ -34,7 +34,6 @@ export default class Configuration {
 	}
 
 	changeValue(event) {
-		console.log(event);
 		const element = event.target;
 		const item = element.id.substring(7);
 		let value;

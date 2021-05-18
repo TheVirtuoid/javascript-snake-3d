@@ -9,12 +9,9 @@ export default class Snake {
 	game;
 	speed = 3;
 	skin;					// snake skin found here: https://www.deviantart.com/mildak/art/snake-skin-68052393
-	crunch;
-	zap;
-	tailCrash;
 	startingSegments;
 	growthCounter = 0;
-	soundMatrix = new Map();
+	rayLength;
 
 	constructor(args) {
 		const { name, game, diameter = null, speed = 3, startingSegments = 10 } = args;
@@ -27,6 +24,7 @@ export default class Snake {
 		this.startingSegments = startingSegments;
 		this.skin = new StandardMaterial(`${name}-skin`, this.game.scene);
 		this.skin.diffuseTexture = new Texture("/img/snakeskin.jpg", this.game.scene);
+		this.rayLength = Math.sqrt((this.game.size * this.game.size) * 2)
 	}
 
 	addTailSegment(grow = false) {
@@ -69,7 +67,7 @@ export default class Snake {
 		let gotAHit = { marker: false, other: false };
 		const origin = this.game.camera.getNextPosition();
 		const direction = this.game.camera.getDirection(Vector3.Forward());
-		const length = Math.sqrt((this.game.size * this.game.size) * 2);
+		const length = this.rayLength;
 		const ray = new Ray(origin, direction, length);
 		const meshHit = this.game.scene.pickWithRay(ray);
 		if (meshHit?.pickedMesh?.name) {
@@ -95,8 +93,6 @@ export default class Snake {
 		const cameraPosition = this.game.camera.position.clone();
 		for(let i = 0; i < this.startingSegments; i++) {
 			const segment = this.newSegment();
-			// const position = cameraPosition.clone();
-			// position.subtractInPlace(new Vector3(0, i * this.diameter, 0));
 			segment.position = cameraPosition.clone();
 			this.tail.push(segment);
 		}

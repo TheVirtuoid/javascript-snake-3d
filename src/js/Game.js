@@ -14,39 +14,55 @@ import Configuration from "./Configuration";
 import GameSound from "./GameSound";
 
 export default class Game {
-	scene;
-	engine;
-	camera;
-	light;
-	snake;
-	board;
-	canvas;
-	screens;
+	scene;					// BabylonJS scene
+	engine;					// BabylonJS engine
+	camera;					// Camera class instance
+	light;					// Light class instance
+	snake;					// Snake class instance
+	board;					// Board class instance
+	gameSound;			// GameSound class instance
+	marker;					// Marker class instance
+	configuration;	// Configuration class instance
+
+	canvas;					// instance of canvas (from start())
+
+	screens;												// pointer to DOM node for screens Id
 	frameRate = 2;
 	stopGame = false;
 	runningFrameRate = 0;
-	speed = 1;
-	diameter = .5;
-	size = 40;
+	speed = 1;											// initial speed of the snake
+	diameter = .5;									// diameter of a snake segment
+	size = 40;											// size of board
 	fps;
-	marker;
 	score;
 	gotAHit;
-	ready;
-	startButton;
-	setConfigurationButton;
-	startingSegments = 200;
-	segmentsPerMarker = 10;
+	startButton;										// button to start the game
+	configurationButton;						// button to launch configuration window
+
+	startingSegments = 20;					// starting number of segments at beginning of game
+	segmentsPerMarker = 20;					// segments to add when marker is hit
+	increasingSpeed = false;				// increase speed as time goes on
+	soundOnOff = true;							// turn sound on or off
+
 	growNextSegment = false;
-	increasingSpeed = false;
-	soundOnOff = true;
-	setConfiguration;
-	gameSound;
+
 
 	constructor (canvasDom) {
-		this.setConfigurationButton = document.getElementById('set-configuration');
-		this.setConfiguration = new Configuration({ game: this, launcher: this.setConfigurationButton });
-		const { startingSegments, segmentsPerMarker, increasingSpeed, soundOnOff } = this.setConfiguration.initialize({
+		// BabylonJS initialization
+		this.canvas = canvasDom;
+		this.engine = new Engine(canvasDom);
+		this.scene = new Scene(this.engine);
+		this.scene.clearColor = Color3.Black();
+
+		// internal data
+		this.startButton = document.getElementById('start');
+		this.screens = document.getElementById('screens');
+
+
+		// set the configuration
+		this.configurationButton = document.getElementById('set-configuration');
+		this.configuration = new Configuration({ game: this, launcher: this.configurationButton });
+		const { startingSegments, segmentsPerMarker, increasingSpeed, soundOnOff } = this.configuration.initialize({
 			startingSegments: this.startingSegments,
 			segmentsPerMarker: this.segmentsPerMarker,
 			increasingSpeed: this.increasingSpeed,
@@ -55,24 +71,34 @@ export default class Game {
 		this.segmentsPerMarker = segmentsPerMarker;
 		this.increasingSpeed = increasingSpeed;
 		this.soundOnOff = soundOnOff;
-		this.screens = document.getElementById('screens');
-		this.canvas = canvasDom;
-		this.engine = new Engine(canvasDom);
-		this.scene = new Scene(this.engine);
-		this.scene.clearColor = Color3.Black();
-		const startingPosition = new Vector3(0, 10, 10);
-		this.camera = new Camera( { scene: this.scene, canvasDom });
-		this.light = new Light( {name: "light", game: this });
-		this.snake = new Snake({ game: this, name: 'snake', speed: this.speed, startingPosition, startingSegments: this.startingSegments, diameter: this.diameter });
-		this.board = new Board({ name: "board", game: this, size: this.size });
-		this.gameSound = new GameSound({ game: this });
-		this.fps = document.getElementById('fps');
-		this.marker = new Marker({ name: "marker", game: this });
-		this.score = 0;
-		this.ready = false;
-		this.startButton = document.getElementById('start');
-		this.scene.registerBeforeRender(this.gameRunner.bind(this));
 		this.screens.addEventListener('snake-reinitialize', this.changeConfiguration.bind(this));
+
+
+
+		// setup camera
+		this.camera = new Camera( { scene: this.scene, canvasDom });
+
+		// setup the light
+		this.light = new Light( {name: "light", game: this });
+
+		// setup the snake
+		const startingPosition = new Vector3(0, 10, 10);
+		this.snake = new Snake({ game: this, name: 'snake', speed: this.speed, startingPosition, startingSegments: this.startingSegments, diameter: this.diameter });
+
+		// setup the board
+		this.board = new Board({ name: "board", game: this, size: this.size });
+
+		// setup the gameSound
+		this.gameSound = new GameSound({ game: this });
+
+		// setup the marker
+		this.marker = new Marker({ name: "marker", game: this });
+
+		// finish up
+		this.fps = document.getElementById('fps');
+		this.score = 0;
+		this.scene.registerBeforeRender(this.gameRunner.bind(this));
+
 	}
 
 	start() {
@@ -82,12 +108,13 @@ export default class Game {
 		initializers.push(this.snake.initialize());
 		initializers.push(this.board.initialize());
 		initializers.push(this.marker.initialize());
+		initializers.push(this.gameSound.initialize());
 		Promise.all(initializers)
 				.then(this.initialize.bind(this));
 	}
 
 	initialize() {
-		this.ready = true;
+		// test
 		this.runningFrameRate = this.frameRate;
 		this.stopGame = false;
 		this.growNextSegment = false;
@@ -99,7 +126,7 @@ export default class Game {
 	}
 
 	changeConfiguration(event) {
-		const { startingSegments, segmentsPerMarker, increasingSpeed, soundOnOff } = this.setConfiguration.get();
+		const { startingSegments, segmentsPerMarker, increasingSpeed, soundOnOff } = this.configuration.get();
 		if (this.startingSegments !== startingSegments) {
 			this.snake.initialize( { startingSegments });
 		}
@@ -111,7 +138,7 @@ export default class Game {
 
 	go () {
 		this.startButton.setAttribute('disabled', '');
-		this.setConfigurationButton.setAttribute('disabled', '');
+		this.configurationButton.setAttribute('disabled', '');
 		this.startButton.classList.add('hide');
 		this.startButton.textContent = "Please Wait";
 		this.marker.setPosition();
@@ -127,7 +154,7 @@ export default class Game {
 		this.startButton.textContent = "Play Again";
 		this.startButton.addEventListener('click', this.start.bind(this), { once: true });
 		this.startButton.removeAttribute('disabled');
-		this.setConfigurationButton.removeAttribute('disabled');
+		this.configurationButton.removeAttribute('disabled');
 		this.startButton.classList.remove('hide');
 	}
 

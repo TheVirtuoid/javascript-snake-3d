@@ -20,4 +20,8 @@ export default class GameSound {
 			soundToPlay.play();
 		}
 	}
+
+	initialize() {
+		return Promise.resolve(true);
+	}
 }
