@@ -27,9 +27,9 @@ export default class Game {
 	canvas;					// instance of canvas (from start())
 
 	screens;												// pointer to DOM node for screens Id
-	frameRate = 2;
-	stopGame = false;
-	runningFrameRate = 0;
+	stopGame = false;								// flag for stopping the game
+	frameRate = 2;									// number of frames between renderings
+	runningFrameRate = 0;						// countdown variable for framerate
 	speed = 1;											// initial speed of the snake
 	diameter = .5;									// diameter of a snake segment
 	size = 40;											// size of board
@@ -44,7 +44,7 @@ export default class Game {
 	increasingSpeed = false;				// increase speed as time goes on
 	soundOnOff = true;							// turn sound on or off
 
-	growNextSegment = false;
+	growNextSegment = false;				// flag for determining if the snake is to grow
 
 
 	constructor (canvasDom) {
@@ -150,6 +150,8 @@ export default class Game {
 	}
 
 	stop () {
+		this.gameSound.play(this.stopGame);
+		this.engine.stopRenderLoop();
 		document.exitPointerLock();
 		this.startButton.textContent = "Play Again";
 		this.startButton.addEventListener('click', this.start.bind(this), { once: true });
@@ -160,8 +162,6 @@ export default class Game {
 
 	gameRunner () {
 		if (this.stopGame) {
-			this.gameSound.play(this.stopGame);
-			this.engine.stopRenderLoop();
 			this.stop();
 			return;
 		}
