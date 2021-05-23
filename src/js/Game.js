@@ -26,16 +26,15 @@ export default class Game {
 
 	canvas;					// instance of canvas (from start())
 
-	screens;												// pointer to DOM node for screens Id
-	stopGame = false;								// flag for stopping the game
-	frameRate = 2;									// number of frames between renderings
-	runningFrameRate = 0;						// countdown variable for framerate
+
 	speed = 1;											// initial speed of the snake
 	diameter = .5;									// diameter of a snake segment
 	size = 40;											// size of board
 	fps;
 	score;
 	gotAHit;
+
+	screens;												// pointer to DOM node for screens Id
 	startButton;										// button to start the game
 	configurationButton;						// button to launch configuration window
 
@@ -44,7 +43,14 @@ export default class Game {
 	increasingSpeed = false;				// increase speed as time goes on
 	soundOnOff = true;							// turn sound on or off
 
+	// finish up
+	fps;														// pointer to FPS dom,
+	score;													// The score of the game
+	gotAHit;												// Did we get a hit or not?
+	frameRate = 2;									// number of frames between renderings
 	growNextSegment = false;				// flag for determining if the snake is to grow
+	stopGame = false;								// flag for stopping the game
+	runningFrameRate = 0;						// countdown variable for framerate
 
 
 	constructor (canvasDom) {
@@ -96,7 +102,6 @@ export default class Game {
 
 		// finish up
 		this.fps = document.getElementById('fps');
-		this.score = 0;
 		this.scene.registerBeforeRender(this.gameRunner.bind(this));
 
 	}
@@ -150,8 +155,8 @@ export default class Game {
 	}
 
 	stop () {
-		this.gameSound.play(this.stopGame);
 		this.engine.stopRenderLoop();
+		this.gameSound.play(this.stopGame);
 		document.exitPointerLock();
 		this.startButton.textContent = "Play Again";
 		this.startButton.addEventListener('click', this.start.bind(this), { once: true });

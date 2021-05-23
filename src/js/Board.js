@@ -41,13 +41,13 @@ export default class Board {
 
 		wallSetup.forEach( (params, index) => {
 			const { position, size, rotation, rotationAmount, offset } = params;
-			let wall = MeshBuilder.CreateTiledPlane(`${name}-${index}`, { size, sideOrientation: Mesh.DOUBLESIDE, pattern: Mesh.NO_FLIP, tileSize: 4 }, scene);
+			let wall = MeshBuilder.CreateTiledPlane(`${name}-${index}`, { size, sideOrientation: Mesh.DOUBLESIDE, pattern: Mesh.NO_FLIP, tileSize: 16 }, scene);
 			wall.material = material;
 			wall.position = position;
-			wall.position.addInPlace(offset);
-			wall.enableEdgesRendering();
-			wall.edgesWidth = 16;
-			wall.edgesColor = new Color4(0, 1, 0, 1);
+			// wall.position.addInPlace(offset);
+			// wall.enableEdgesRendering();
+			// wall.edgesWidth = 16;
+			// wall.edgesColor = new Color4(0, 1, 0, 1);
 			if (rotation) {
 				wall.rotate(rotation, rotationAmount);
 			}
