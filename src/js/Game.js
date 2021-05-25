@@ -27,12 +27,9 @@ export default class Game {
 	canvas;					// instance of canvas (from start())
 
 
-	speed = 1;											// initial speed of the snake
+	snakeSpeed = 2;									// initial speed of the snake
 	diameter = .5;									// diameter of a snake segment
 	size = 40;											// size of board
-	fps;
-	score;
-	gotAHit;
 
 	screens;												// pointer to DOM node for screens Id
 	startButton;										// button to start the game
@@ -46,10 +43,8 @@ export default class Game {
 	// finish up
 	fps;														// pointer to FPS dom,
 	score;													// The score of the game
-	gotAHit;												// Did we get a hit or not?
-	frameRate = 2;									// number of frames between renderings
+	frameRate = 3;									// number of frames between renderings
 	growNextSegment = false;				// flag for determining if the snake is to grow
-	stopGame = false;								// flag for stopping the game
 	runningFrameRate = 0;						// countdown variable for framerate
 
 
@@ -82,14 +77,15 @@ export default class Game {
 
 
 		// setup camera
-		this.camera = new Camera( { scene: this.scene, canvasDom });
+		this.camera = new Camera( { game: this, canvasDom });
 
 		// setup the light
 		this.light = new Light( {name: "light", game: this });
 
 		// setup the snake
 		const startingPosition = new Vector3(0, 10, 10);
-		this.snake = new Snake({ game: this, name: 'snake', speed: this.speed, startingPosition, startingSegments: this.startingSegments, diameter: this.diameter });
+		this.snake = new Snake({ game: this, name: 'snake', speed: this.snakeSpeed,
+			startingPosition, startingSegments: this.startingSegments, diameter: this.diameter });
 
 		// setup the board
 		this.board = new Board({ name: "board", game: this, size: this.size });
@@ -119,9 +115,7 @@ export default class Game {
 	}
 
 	initialize() {
-		// testasas
 		this.runningFrameRate = this.frameRate;
-		this.stopGame = false;
 		this.growNextSegment = false;
 		this.score = 0;
 		this.startButton.removeAttribute('disabled');
@@ -156,7 +150,6 @@ export default class Game {
 
 	stop () {
 		this.engine.stopRenderLoop();
-		this.gameSound.play(this.stopGame);
 		document.exitPointerLock();
 		this.startButton.textContent = "Play Again";
 		this.startButton.addEventListener('click', this.start.bind(this), { once: true });
@@ -166,17 +159,15 @@ export default class Game {
 	}
 
 	gameRunner () {
-		if (this.stopGame) {
-			this.stop();
-			return;
-		}
 		this.runningFrameRate--;
 		if (this.runningFrameRate === 0) {
 			this.runningFrameRate = this.frameRate;
-			this.gotAHit = this.snake.move(this.growNextSegment);
 			this.growNextSegment = false;
-			this.stopGame = this.gotAHit.other;
-			if (this.gotAHit.marker) {
+			const gotAHit = this.snake.move(this.growNextSegment);
+			if (gotAHit.other) {
+				this.gameSound.play(gotAHit.other);
+				this.stop();
+			} else if (gotAHit.marker) {
 				this.marker.setPosition();
 				this.score++;
 				this.gameSound.play("marker");

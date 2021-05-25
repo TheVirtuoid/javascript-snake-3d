@@ -4,22 +4,22 @@ export default class Snake {
 
 	tail = [];
 	tailNumber = 0;
-	diameter = .25;
+	diameter;
 	radius;
+	speed;
 	game;
-	speed = 3;
 	skin;					// snake skin found here: https://www.deviantart.com/mildak/art/snake-skin-68052393
 	startingSegments;
 	growthCounter = 0;
 	rayLength;
 
 	constructor(args) {
-		const { name, game, diameter = null, speed = 3, startingSegments = 10 } = args;
+		const { name, game, diameter, speed, startingSegments = 10 } = args;
 		this.name = name;
 		this.game = game;
-		this.diameter = diameter || this.diameter;
+		this.speed = speed || this.game.snakeSpeed;
+		this.diameter = diameter || this.game.diameter;
 		this.radius = this.diameter / 2;
-		this.speed = speed || this.speed;
 		this.tailNumber = 0;
 		this.startingSegments = startingSegments;
 		this.skin = new StandardMaterial(`${name}-skin`, this.game.scene);
