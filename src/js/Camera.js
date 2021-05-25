@@ -6,7 +6,7 @@ export default class Camera {
 	mesh;
 
 	constructor( args ) {
-		const { game, canvasDom, speed = 4, position = new Vector3(0, 10, 0) } = args;
+		const { game, canvasDom, position = new Vector3(0, 10, 0) } = args;
 		this.game = game;
 		this.gameCamera = new UniversalCamera("camera", position, this.game.scene);
 		this.gameCamera.attachControl(canvasDom, true);
@@ -17,7 +17,7 @@ export default class Camera {
 
 
 	move() {
-		const speed = this.game.speed;
+		const speed = this.game.snakeSpeed;
 		const pos = this.gameCamera.position;
 		const newDirection = this.gameCamera.getDirection(Vector3.Forward()).divide(new Vector3(speed, speed, speed));
 		pos.addInPlace(newDirection);
@@ -37,7 +37,7 @@ export default class Camera {
 	}
 
 	getNextPosition () {
-		const speed = this.game.speed;
+		const speed = this.game.snakeSpeed;
 		const position = this.position.clone();
 		position.addInPlace(this.getDirection(Vector3.Forward()).divide(new Vector3(speed, speed, speed)));
 		return position;
