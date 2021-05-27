@@ -27,7 +27,7 @@ export default class Game {
 	canvas;					// instance of canvas (from start())
 
 
-	snakeSpeed = 2;									// initial speed of the snake
+	snakeSpeed = 3;									// initial speed of the snake
 	diameter = .5;									// diameter of a snake segment
 	size = 40;											// size of board
 
@@ -43,7 +43,7 @@ export default class Game {
 	// finish up
 	fps;														// pointer to FPS dom,
 	score;													// The score of the game
-	frameRate = 3;									// number of frames between renderings
+	frameRate = 2;									// number of frames between renderings
 	growNextSegment = false;				// flag for determining if the snake is to grow
 	runningFrameRate = 0;						// countdown variable for framerate
 
@@ -118,6 +118,7 @@ export default class Game {
 		this.runningFrameRate = this.frameRate;
 		this.growNextSegment = false;
 		this.score = 0;
+		document.getElementById('score').textContent = this.score.toString();
 		this.startButton.removeAttribute('disabled');
 		this.startButton.textContent = "Start"
 		this.startButton.addEventListener('click', this.go.bind(this), { once: true });
