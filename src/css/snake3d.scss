@@ -1,0 +1,180 @@
+html {
+  font-size: 20px;
+  font-family: Roboto, sans-serif;
+}
+
+body {
+  font-size: 1rem;
+}
+
+main {
+  display: inline-block;
+  padding: .5rem;
+  border-radius: 1rem;
+  background-color: black;
+  background-image: url('../img/skin-background.jpg');
+
+  #data {
+    #set-configuration {
+      color: white;
+      box-shadow: none;
+      background-color: transparent;
+      font-size: 1rem;
+      padding: 0;
+      &[disabled] {
+        color: gray;
+      }
+    }
+  }
+
+  #screens {
+    display: grid;
+    width: 600px;
+    canvas {
+      grid-area: 1 / 1/ 2 / 2;
+    }
+    #configuration {
+      grid-area: 1 / 1/ 2 / 2;
+      width: 90%;
+      max-height: 90%;
+      margin: auto auto;
+      z-index: 10;
+      display: none;
+      position: relative;
+      background-color: white;
+      border-radius: 1rem;
+      padding: .5rem;
+      color: darkblue;
+      &.show {
+        display: block;
+      }
+      > label {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin-bottom: 1rem;
+        &:first-of-type {
+          align-items: center;
+          span {
+            font-weight: bold;
+            font-size: 1.5rem;
+            &:last-of-type {
+              text-align: right;
+            }
+          }
+        }
+        input, span, button {
+          flex-basis: 50%;
+        }
+        button[close] {
+          box-shadow: none;
+          background-color: transparent;
+          font-weight: bold;
+          font-size: 2rem;
+        }
+        input {
+          text-align: left;
+          padding-left: 1rem;
+          &[type="checkbox"] {
+            display: none;
+            &:checked + label::before {
+              background-color: #89c12d;
+            }
+            &:checked + label::after {
+              left: 24px;
+            }
+          }
+        }
+        span {
+          text-align: right;
+          padding-right: 1rem;
+          &:last-of-type {
+            text-align: left;
+            position: relative;
+            label {
+              display: block;
+              width: 48px;
+              height: 24px;
+              text-indent: -150%;
+              clip: rect(0, 0, 0, 0);
+              color: transparent;
+              user-select: none;
+              &::before, &::after {
+                content: "";
+                display: block;
+                position: absolute;
+                cursor: pointer;
+              }
+              &::before {
+                width: 48px;
+                height: 100%;
+                background-color: #dedede;
+                border-radius: 9999em;
+                transition: background-color 0.25s ease;
+              }
+              &::after {
+                top: 0;
+                left: 0;
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background-color: #ffffff;
+                box-shadow: 0 0 2px rgba(0, 0, 0, 0.45);
+                transition: left 0.25s ease;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  canvas {
+    background-color: black;
+  }
+
+  h1 {
+    text-align: center;
+    font-family: 'Pangolin', cursive;
+    color: red;
+
+    span {
+      background-color: rgba(255, 255, 255, .5);
+      box-shadow: 0px 0px 10px 10px rgba(255, 255, 255, .5);
+    }
+
+  }
+  section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: .5rem;
+    color: white;
+
+    div {
+      vertical-align: middle;
+      > span {
+        display: inline-block;
+        padding: .25rem 2rem;
+      }
+    }
+
+    button {
+      background-color: rgba(128, 192, 255, .7);
+      box-shadow: 0px 0px 5px 5px green;
+      border: none;
+      border-radius: 1rem;
+      padding: .25rem 2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      &[disabled] {
+        cursor: default;
+        box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, .4);
+        background-color: rgba(200, 200, 200, .7);
+      }
+      &.hide {
+        visibility: hidden;
+      }
+    }
+  }
+}
