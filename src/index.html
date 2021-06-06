@@ -1,37 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <meta name="Description" content="Boring JavaScript Projects Presents: JavaScript Snake in 3D">
-        <link rel="icon" href="/img/favicon.ico">
-        <link rel="stylesheet" href="/css/snake3d.css">
-        <link rel="preconnet" href="https://fonts.gstatic.com">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pangolin&display=swap">
-        <title>Boring JavaScript Projects: JavaScript Snake 3D</title>
-    </head>
-    <body>
-        <header></header>
-        <main>
-            <h1><span>JavaScript Snake - In 3D</span></h1>
-            <section id="data">
-                <div><span>Score: <span id="score">0</span></span></div>
-                <div><button id="start" type="button" disabled>Please Wait</button></div>
-                <div><span>FPS: <span id="fps">0</span></span><button type="button" id="set-configuration" title="Configure">&#128736;</button></div>
-            </section>
-            <section id="screens">
-                <canvas id="board" width="500" height="500"></canvas>
-                <div id="configuration">
-                    <label><span>Configuration</span><span><button type="button" close title="Close" id="close">&#128500;</button></span></label>
-                    <label><span>Starting Segments</span><span><input type="number" id="config-startingSegments" item="startingSegments" /></span></label>
-                    <label><span>Segments per Marker</span><span><input type="number" id="config-segmentsPerMarker" item="segmentsPerMarker" /></span></label>
-                    <label><span>Increasing Speed (n/a)</span><span><input type="checkbox" id="config-increasingSpeed" item="increasingSpeed" /><label for="config-increasingSpeed">speed</label></span></label>
-                    <label><span>Sound On/Off</span><span><input type="checkbox" id="config-soundOnOff" item="soundsOnOff"/><label for="config-soundOnOff">sound</label></span></label>
-                </div>
-            </section>
-        </main>
-        <footer>Copyright &copy; 2021 and onwards m.parker smith a.k.a. TheVirtuoid</footer>
-        <script src="/js/snake3d.js" type="module"></script>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="Description" content="Boring JavaScript Projects Presents: JavaScript Snake in 3D">
+    <link rel="icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/snake3d.css">
+    <link rel="preconnet" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pangolin&display=swap">
+    <title>Boring JavaScript Projects: JavaScript Snake 3D</title>
+</head>
+<body>
+<header></header>
+<main>
+    <h1><span>Two Player JavaScript Snake - In 3D</span></h1>
+    <section id="data">
+        <div>
+            <span>Score: <span id="score">0</span></span>
+            <span>Opponent: <span id="opponent"></span></span>
+        </div>
+        <div><button id="start" type="button" disabled>Please Wait</button></div>
+        <div><span>FPS: <span id="fps">0</span></span><!-- <button type="button" id="set-configuration" title="Configure">&#128736;</button> --></div>
+    </section>
+    <section id="screens">
+        <canvas id="board" width="500" height="500"></canvas>
+        <!--
+        <div id="configuration">
+            <label><span>Configuration</span><span><button type="button" close title="Close" id="close">&#128500;</button></span></label>
+            <label><span>Starting Segments</span><span><input type="number" id="config-startingSegments" item="startingSegments" /></span></label>
+            <label><span>Segments per Marker</span><span><input type="number" id="config-segmentsPerMarker" item="segmentsPerMarker" /></span></label>
+            <label><span>Increasing Speed (n/a)</span><span><input type="checkbox" id="config-increasingSpeed" item="increasingSpeed" /><label for="config-increasingSpeed">speed</label></span></label>
+            <label><span>Sound On/Off</span><span><input type="checkbox" id="config-soundOnOff" item="soundsOnOff"/><label for="config-soundOnOff">sound</label></span></label>
+        </div>
+        -->
+    </section>
+</main>
+<footer>Copyright &copy; 2021 and onwards m.parker smith a.k.a. TheVirtuoid</footer>
+<script src="/js/snake3d.js" type="module"></script>
+</body>
 </html>

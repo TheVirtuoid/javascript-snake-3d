@@ -12,6 +12,7 @@ import Light from "./Light";
 import Marker from "./Marker";
 import Configuration from "./Configuration";
 import GameSound from "./GameSound";
+import WebRTC from "./WebRTC";
 
 export default class Game {
 	scene;					// BabylonJS scene
@@ -23,6 +24,7 @@ export default class Game {
 	gameSound;			// GameSound class instance
 	marker;					// Marker class instance
 	configuration;	// Configuration class instance
+	webRTC;					// WebRTC class instance
 
 	canvas;					// instance of canvas (from start())
 
@@ -35,8 +37,8 @@ export default class Game {
 	startButton;										// button to start the game
 	configurationButton;						// button to launch configuration window
 
-	startingSegments = 20;					// starting number of segments at beginning of game
-	segmentsPerMarker = 20;					// segments to add when marker is hit
+	startingSegments = 50;					// starting number of segments at beginning of game
+	segmentsPerMarker = 50;					// segments to add when marker is hit
 	increasingSpeed = false;				// increase speed as time goes on
 	soundOnOff = true;							// turn sound on or off
 
@@ -47,8 +49,7 @@ export default class Game {
 	growNextSegment = false;				// flag for determining if the snake is to grow
 	runningFrameRate = 0;						// countdown variable for framerate
 
-
-	constructor (canvasDom) {
+	constructor(canvasDom) {
 		// BabylonJS initialization
 		this.canvas = canvasDom;
 		this.engine = new Engine(canvasDom);
@@ -60,58 +61,72 @@ export default class Game {
 		this.screens = document.getElementById('screens');
 
 
-		// set the configuration
-		this.configurationButton = document.getElementById('set-configuration');
-		this.configuration = new Configuration({ game: this, launcher: this.configurationButton });
-		const { startingSegments, segmentsPerMarker, increasingSpeed, soundOnOff } = this.configuration.initialize({
-			startingSegments: this.startingSegments,
-			segmentsPerMarker: this.segmentsPerMarker,
-			increasingSpeed: this.increasingSpeed,
-			soundOnOff: this.soundOnOff });
-		this.startingSegments = startingSegments;
-		this.segmentsPerMarker = segmentsPerMarker;
-		this.increasingSpeed = increasingSpeed;
-		this.soundOnOff = soundOnOff;
-		this.screens.addEventListener('snake-reinitialize', this.changeConfiguration.bind(this));
+		/*
+				// set the configuration
+				this.configurationButton = document.getElementById('set-configuration');
+				this.configuration = new Configuration({ game: this, launcher: this.configurationButton });
+				const { startingSegments, segmentsPerMarker, increasingSpeed, soundOnOff } = this.configuration.initialize({
+					startingSegments: this.startingSegments,
+					segmentsPerMarker: this.segmentsPerMarker,
+					increasingSpeed: this.increasingSpeed,
+					soundOnOff: this.soundOnOff });
+				this.startingSegments = startingSegments;
+				this.segmentsPerMarker = segmentsPerMarker;
+				this.increasingSpeed = increasingSpeed;
+				this.soundOnOff = soundOnOff;
+				this.screens.addEventListener('snake-reinitialize', this.changeConfiguration.bind(this));
 
-
-
+		*/
 		// setup camera
 		this.camera = new Camera( { game: this, canvasDom });
 
 		// setup the light
 		this.light = new Light( {name: "light", game: this });
 
+		// setup the board
+		this.board = new Board({ name: "board", game: this, size: this.size });
+
+		// setup the marker
+		this.marker = new Marker({ name: "marker", game: this });
+
+		// setup the gameSound
+		this.gameSound = new GameSound({ game: this });
+
 		// setup the snake
 		const startingPosition = new Vector3(0, 10, 10);
 		this.snake = new Snake({ game: this, name: 'snake', speed: this.snakeSpeed,
 			startingPosition, startingSegments: this.startingSegments, diameter: this.diameter });
 
-		// setup the board
-		this.board = new Board({ name: "board", game: this, size: this.size });
-
-		// setup the gameSound
-		this.gameSound = new GameSound({ game: this });
-
-		// setup the marker
-		this.marker = new Marker({ name: "marker", game: this });
+		// setup WebRTC
+		this.webRTC = new WebRTC({ game: this });
 
 		// finish up
 		this.fps = document.getElementById('fps');
 		this.scene.registerBeforeRender(this.gameRunner.bind(this));
-
 	}
 
-	start() {
+	launch () {
 		const initializers = [];
 		initializers.push(this.camera.initialize());
 		initializers.push(this.light.initialize());
-		initializers.push(this.snake.initialize());
 		initializers.push(this.board.initialize());
 		initializers.push(this.marker.initialize());
 		initializers.push(this.gameSound.initialize());
+		initializers.push(this.snake.initialize());
+		initializers.push(this.webRTC.initialize());
 		Promise.all(initializers)
-				.then(this.initialize.bind(this));
+				.then(this.start.bind(this));
+	}
+
+	connect () {
+		this.webRTC.connect()
+				.then(this.start.bind(this));
+	}
+
+	start () {
+		this.startButton.removeAttribute('disabled');
+		this.startButton.textContent = "Connect"
+		this.startButton.addEventListener('click', this.connect.bind(this), { once: true });
 	}
 
 	initialize() {
@@ -123,17 +138,6 @@ export default class Game {
 		this.startButton.textContent = "Start"
 		this.startButton.addEventListener('click', this.go.bind(this), { once: true });
 		this.scene.render();
-	}
-
-	changeConfiguration(event) {
-		const { startingSegments, segmentsPerMarker, increasingSpeed, soundOnOff } = this.configuration.get();
-		if (this.startingSegments !== startingSegments) {
-			this.snake.initialize( { startingSegments });
-		}
-		this.startingSegments = startingSegments;
-		this.segmentsPerMarker = segmentsPerMarker;
-		this.increasingSpeed = increasingSpeed;
-		this.soundOnOff = soundOnOff;
 	}
 
 	go () {
@@ -178,5 +182,19 @@ export default class Game {
 			this.fps.textContent = this.engine.getFps().toFixed();
 		}
 	}
+
+	/*
+
+		changeConfiguration(event) {
+			const { startingSegments, segmentsPerMarker, increasingSpeed, soundOnOff } = this.configuration.get();
+			if (this.startingSegments !== startingSegments) {
+				this.snake.initialize( { startingSegments });
+			}
+			this.startingSegments = startingSegments;
+			this.segmentsPerMarker = segmentsPerMarker;
+			this.increasingSpeed = increasingSpeed;
+			this.soundOnOff = soundOnOff;
+		}
+	*/
 
 }

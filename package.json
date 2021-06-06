@@ -30,5 +30,8 @@
   "bugs": {
     "url": "https://github.com/TheVirtuoid/javascript-snake-3d/issues"
   },
-  "homepage": "https://github.com/TheVirtuoid/javascript-snake-3d#readme"
+  "homepage": "https://github.com/TheVirtuoid/javascript-snake-3d#readme",
+  "dependencies": {
+    "webrtc-adapter": "^8.0.0"
+  }
 }
