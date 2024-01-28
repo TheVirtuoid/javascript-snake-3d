@@ -14,10 +14,10 @@
     "url": "git+https://github.com/TheVirtuoid/javascript-snake-3d.git"
   },
   "devDependencies": {
-    "@babylonjs/core": "^4.2.0",
-    "@babylonjs/loaders": "^4.2.0",
+    "@babylonjs/core": "^6.40.0",
+    "@babylonjs/loaders": "^6.40.0",
     "earcut": "^2.2.2",
-    "vite": "^2.0.5"
+    "vite": "^5.1.0-beta.5"
   },
   "keywords": [
     "javascript",

@@ -1,0 +1,172 @@
+html {
+  font-size: 20px;
+  font-family: Roboto, sans-serif;
+}
+
+body {
+  font-size: 1rem;
+}
+
+main {
+  display: inline-block;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  background-color: black;
+  background-image: url("../img/skin-background.jpg");
+}
+main #data #set-configuration {
+  color: white;
+  box-shadow: none;
+  background-color: transparent;
+  font-size: 1rem;
+  padding: 0;
+}
+main #data #set-configuration[disabled] {
+  color: gray;
+}
+main #screens {
+  display: grid;
+  width: 600px;
+}
+main #screens canvas {
+  grid-area: 1/1/2/2;
+}
+main #screens #configuration {
+  grid-area: 1/1/2/2;
+  width: 90%;
+  max-height: 90%;
+  margin: auto auto;
+  z-index: 10;
+  display: none;
+  position: relative;
+  background-color: white;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  color: darkblue;
+}
+main #screens #configuration.show {
+  display: block;
+}
+main #screens #configuration > label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+}
+main #screens #configuration > label:first-of-type {
+  align-items: center;
+}
+main #screens #configuration > label:first-of-type span {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+main #screens #configuration > label:first-of-type span:last-of-type {
+  text-align: right;
+}
+main #screens #configuration > label input, main #screens #configuration > label span, main #screens #configuration > label button {
+  flex-basis: 50%;
+}
+main #screens #configuration > label button[close] {
+  box-shadow: none;
+  background-color: transparent;
+  font-weight: bold;
+  font-size: 2rem;
+}
+main #screens #configuration > label input {
+  text-align: left;
+  padding-left: 1rem;
+}
+main #screens #configuration > label input[type=checkbox] {
+  display: none;
+}
+main #screens #configuration > label input[type=checkbox]:checked + label::before {
+  background-color: #89c12d;
+}
+main #screens #configuration > label input[type=checkbox]:checked + label::after {
+  left: 24px;
+}
+main #screens #configuration > label span {
+  text-align: right;
+  padding-right: 1rem;
+}
+main #screens #configuration > label span:last-of-type {
+  text-align: left;
+  position: relative;
+}
+main #screens #configuration > label span:last-of-type label {
+  display: block;
+  width: 48px;
+  height: 24px;
+  text-indent: -150%;
+  clip: rect(0, 0, 0, 0);
+  color: transparent;
+  user-select: none;
+}
+main #screens #configuration > label span:last-of-type label::before, main #screens #configuration > label span:last-of-type label::after {
+  content: "";
+  display: block;
+  position: absolute;
+  cursor: pointer;
+}
+main #screens #configuration > label span:last-of-type label::before {
+  width: 48px;
+  height: 100%;
+  background-color: #dedede;
+  border-radius: 9999em;
+  transition: background-color 0.25s ease;
+}
+main #screens #configuration > label span:last-of-type label::after {
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.45);
+  transition: left 0.25s ease;
+}
+main canvas {
+  background-color: black;
+}
+main h1 {
+  text-align: center;
+  font-family: "Pangolin", cursive;
+  color: red;
+}
+main h1 span {
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 0px 10px 10px rgba(255, 255, 255, 0.5);
+}
+main section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-bottom: 0.5rem;
+  color: white;
+}
+main section div {
+  vertical-align: middle;
+}
+main section div > span {
+  display: inline-block;
+  padding: 0.25rem 2rem;
+}
+main section button {
+  background-color: rgba(128, 192, 255, 0.7);
+  box-shadow: 0px 0px 5px 5px green;
+  border: none;
+  border-radius: 1rem;
+  padding: 0.25rem 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+main section button[disabled] {
+  cursor: default;
+  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.4);
+  background-color: rgba(200, 200, 200, 0.7);
+}
+main section button.hide {
+  visibility: hidden;
+}
+
+/*# sourceMappingURL=snake3d.css.map */
